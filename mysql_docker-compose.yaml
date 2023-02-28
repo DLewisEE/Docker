@@ -1,0 +1,38 @@
+services:
+  mysqldb:
+    image: mysql
+    container_name: mysqldb
+    command: --transaction-isolation=READ-COMMITTED --log-bin=ROW
+    restart: unless-stopped
+    volumes: 
+      - mysqldb_volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_user_password
+      MYSQL_DATABASE: application
+      MYSQL_USER: application
+      MYSQL_INITDB_SKIP_TZINFO: 1
+    networks:
+      - mysql_network
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    secrets:
+      - mysql_root_password
+      - mysql_user_password
+
+volumes:
+  mysqldb_volume:
+
+networks:
+  mysql_network:
+    driver: bridge
+
+secrets:
+  mysql_root_password:
+    file: ~/Workspace/Docker/mysql_root_password
+    # openssl rand -base64 32 > mysql_root_password
+  mysql_user_password:
+    file: ~/Workspace/Docker/mysql_user_password
+    # openssl rand -base64 32 > mysql_user_password

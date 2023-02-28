@@ -1,0 +1,34 @@
+services:
+  postgresqldb:
+    image: postgres:latest
+    container_name: postgresqldb
+    restart: unless-stopped
+    volumes: 
+      - postgresqldb_volume:/var/lib/postgresql
+    environment:
+      - POSTGRES_USER=/run/secrets/postgresql_user
+      - POSTGRES_PASSWORD=/run/secrets/postgresql_root_password
+    networks:
+      - postgresqldb_network
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    secrets:
+      - postgresql_root_password
+      - postgresql_user
+
+volumes:
+  postgresqldb_volume:
+    driver: local
+
+networks:
+  postgresqldb_network:
+    driver: bridge
+
+secrets:
+  postgresql_root_password:
+    file: ~/Workspace/Docker/postgresql_root_password
+    # openssl rand -base64 32 > postgresql_root_password
+  postgresql_user:
+    file: ~/Workspace/Docker/postgresql_user
