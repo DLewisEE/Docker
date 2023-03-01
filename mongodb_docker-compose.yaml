@@ -1,0 +1,32 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    volumes: 
+      - mongodb_volume:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/mongodb_root_user
+      - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongodb_root_password
+    networks:
+      - mongodb_network
+    ports:
+      - 27017-27019:27017-27019
+    secrets:
+      - mongodb_root_user
+      - mongodb_root_password
+
+volumes:
+  mongodb_volume:
+    driver: local
+
+networks:
+  mongodb_network:
+    driver: bridge
+
+secrets:
+  mongodb_root_user:
+    file: ~/Workspace/Docker/mongodb_root_user
+  mongodb_root_password:
+    file: ~/Workspace/Docker/mongodb_root_password
+    # openssl rand -base64 32 > mongodb_root_password

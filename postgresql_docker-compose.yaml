@@ -6,8 +6,8 @@ services:
     volumes: 
       - postgresqldb_volume:/var/lib/postgresql
     environment:
-      - POSTGRES_USER=/run/secrets/postgresql_user
-      - POSTGRES_PASSWORD=/run/secrets/postgresql_root_password
+      - POSTGRES_USER_FILE=/run/secrets/postgresql_user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgresql_root_password
     networks:
       - postgresqldb_network
     ports:
