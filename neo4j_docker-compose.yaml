@@ -9,6 +9,10 @@ services:
       - neo4j_import:/import
       - neo4j_logs:/logs
       - neo4j_plugins:/plugins
+    environment:
+      - NEO4J_server_memory_pagecache_size=1G
+      - NEO4J_dbms.memory.heap.initial_size=1G
+      - NEO4J_server_memory_heap_max__size=1G
     networks:
       - neo4j_network
     ports:
